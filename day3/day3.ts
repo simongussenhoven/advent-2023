@@ -28,7 +28,6 @@ const checkForSymbols = (rowIndex: number, charIndex: number, fullNum: string) =
     for (let i = rowIndex - 1; i <= rowIndex + 1; i++) {
         if (stringArrays[i]) {
             for (let x = charIndex - 1; x <= charIndex + fullNum.length; x++) {
-                if (fullNum === '730') console.log(stringArrays[i][x])
                 if (stringArrays[i][x] && isSymbol(stringArrays[i][x])) hasSymbol = true;
             }
         }
@@ -48,8 +47,6 @@ stringArrays.forEach((str: string, rowIndex: number) => {
         }
     }
 })
-
-console.log(numbersWithSymbols)
 
 console.log(numbersWithSymbols.reduce((prev: any, next: any) => {
     return Number(prev) + Number(next)
