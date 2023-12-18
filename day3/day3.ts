@@ -38,7 +38,6 @@ const checkForSymbols = (rowIndex: number, charIndex: number, fullNum: string) =
 // iterate every string in the array and get
 // the full number when a number is found
 stringArrays.forEach((str: string, rowIndex: number) => {
-    const nums = [] as any[]
     for (let i = 0; i < str.length; i++) {
         if (isNumber(str[i])) {
             const fullNum = getFullNumber(str, i);
