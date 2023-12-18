@@ -1,40 +1,60 @@
 import data from './data'
 
-let array = data.split('\n').slice(1, 2);
-const arrayOfCharArrays = array.map((arr) => {
-    return arr.split("")
-})
+let stringArrays = data.split('\n');
 
 const isNumber = (char: string) => {
     return !isNaN(Number(char))
 }
 
-const getFullNumber = (arr: any, charI: number) => {
-    let numberString = ""
-    for (let i = charI; i <= arr.length; i++) {
-        if (isNumber(arr[i])) {
-            numberString = numberString += arr[i]
-        }
-        else {
-            return {
-                fullNum: Number(numberString),
-                skipToIndex: numberString.length ?? 0
+const isSymbol = (char: string) => {
+    if (char === ".") return false
+    return !isNumber(char)
+}
+
+const getFullNumber = (str: string, i: number) => {
+    let numString = ""
+    for (let x = i; x <= str.length; x++) {
+        if (isNumber(str[x])) numString = numString + str[x]
+        else break;
+    }
+    return numString
+}
+
+const numbersWithSymbols = [] as any
+
+// check surrounding chars for symbols
+const checkForSymbols = (rowIndex: number, charIndex: number, fullNum: string) => {
+    let hasSymbol = false;
+    for (let i = rowIndex - 1; i <= rowIndex + 1; i++) {
+        if (stringArrays[i]) {
+            for (let x = charIndex - 1; x <= charIndex + fullNum.length; x++) {
+                if (fullNum === '730') console.log(stringArrays[i][x])
+                if (stringArrays[i][x] && isSymbol(stringArrays[i][x])) hasSymbol = true;
             }
         }
     }
+    if (hasSymbol) numbersWithSymbols.push(fullNum)
 }
 
-// iterate every character
-arrayOfCharArrays.forEach((arr, rowIndex) => {
-    let skipToIndex = 0
-    return arr.forEach((char, charIndex) => {
-        if (char === ".") return
-        if (!isNumber(char)) return
-        if (charIndex < skipToIndex) return
-        const fullNum = getFullNumber(arr, charIndex)
-        skipToIndex = charIndex + fullNum!.skipToIndex
-    })
+// iterate every string in the array and get
+// the full number when a number is found
+stringArrays.forEach((str: string, rowIndex: number) => {
+    const nums = [] as any[]
+    for (let i = 0; i < str.length; i++) {
+        if (isNumber(str[i])) {
+            const fullNum = getFullNumber(str, i);
+            checkForSymbols(rowIndex, i, fullNum)
+            i = i + fullNum.length
+        }
+    }
 })
+
+console.log(numbersWithSymbols)
+
+console.log(numbersWithSymbols.reduce((prev: any, next: any) => {
+    return Number(prev) + Number(next)
+}))
+
 
 
 
